@@ -68,14 +68,14 @@ class PPolygon(PainterObject):
         if len(xs) != len(ys):
             raise ValueError("xs and ys must have the same length")
         
-        self.polygon = QPolygonF()
+        self.points = []
         for i in range(len(xs)):
-            self.polygon.append(QPointF(xs[i], ys[i]))
+            self.points.append(QPointF(xs[i], ys[i]))
 
         self.set_color(color)
     
     def paint(self, painter: QPainter):
         painter.setBrush(self._brush)
         painter.setPen(Qt.NoPen)
-        painter.drawPolygon(self.polygon)
+        painter.drawPolygon(QPolygonF(self.points))
 

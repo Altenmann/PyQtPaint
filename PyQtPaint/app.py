@@ -5,10 +5,12 @@ from PyQt5.QtWidgets import QApplication
 from PyQtPaint.form import PainterWindow
 
 
-def setup_app(width: int, height: int):
-    global screen_width, screen_height
-    screen_width = width
-    screen_height = height
+def setup_app(**kwargs):
+    '''Use `fullscreen=True` or use `width=(int)` and `height=(int)`'''
+    global screen_width, screen_height, fullscreen
+    screen_width = kwargs.get('width')
+    screen_height = kwargs.get('height')
+    fullscreen = kwargs.get('fullscreen', False)
 
 def run_app(
         init_objects: Callable[[PainterWindow], None],
@@ -24,7 +26,7 @@ def run_app(
 
     update_time = 1/fps
 
-    def wrapper():
+    def update_wrapper():
         while True:
             # Wait for window to be defined
             try:
@@ -41,12 +43,12 @@ def run_app(
             window.update_signal.emit()
             time.sleep(update_time)
 
-    threading.Thread(target=wrapper, daemon=True).start()
+    threading.Thread(target=update_wrapper, daemon=True).start()
 
     # Initialize app
     app = QApplication(sys.argv)
 
-    window = PainterWindow(screen_width, screen_height)
+    window = PainterWindow(fullscreen=fullscreen, width=screen_width, height=screen_height)
     window.show()
 
     # Run app loop

@@ -8,10 +8,14 @@ from PyQtPaint.painter_objects import PainterObject
 class PainterWindow(QMainWindow):
     update_signal = pyqtSignal()
 
-    def __init__(self, width, height):
+    def __init__(self, **kwargs):
         super().__init__()
         self.setWindowTitle("Painter Window")
-        self.setGeometry(100, 100, width, height)
+        if kwargs.get('fullscreen', False):
+            self.showFullScreen()
+        else:
+            width, height = kwargs.get('width', 500), kwargs.get('height', 500)
+            self.setGeometry(100, 100, width, height)
         self.painter_objects = []
 
         self.update_signal.connect(self.update)
@@ -38,3 +42,9 @@ class PainterWindow(QMainWindow):
         for obj in self.painter_objects:
             obj.paint(painter)
         painter.end()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self.close()
+        else:
+            super().keyPressEvent(event)
