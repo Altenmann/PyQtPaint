@@ -3,7 +3,7 @@ from typing import Sequence
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtGui import QPainter, QBrush
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQtPaint.painter_objects import PainterObject
+from PyQtPaint.objects import PainterObject
 
 class PainterWindow(QMainWindow):
     update_signal = pyqtSignal()

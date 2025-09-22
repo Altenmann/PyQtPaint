@@ -1,7 +1,7 @@
 
 from PyQtPaint.form import PainterWindow
 from PyQtPaint.app import setup_app, run_app
-from PyQtPaint.painter_objects import PLine, PPolygon
+from PyQtPaint.objects import PLine, PPolygon
 
 def create_objects(width, height):
     global poly1, xlines, ylines
