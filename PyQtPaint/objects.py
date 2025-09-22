@@ -4,9 +4,9 @@ from PyQt5.QtCore import Qt, QPointF
 from abc import ABC, abstractmethod
 
 class PainterObject(ABC):
-    def __init__(self):
-        self._brush = QBrush(Qt.black)
-        self._pen = QPen(Qt.black)
+    def __init__(self, color):
+        self._brush = QBrush(color)
+        self._pen = QPen(color)
 
     def set_color(self, color):
         self._brush.setColor(color)
@@ -21,12 +21,11 @@ class PainterObject(ABC):
 # PainterObject for drawing rectangles
 class PRectangle(PainterObject):
     def __init__(self, x, y, width, height, color=Qt.white):
-        super().__init__()
+        super().__init__(color)
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.set_color(color)
 
     def paint(self, painter: QPainter):
 
@@ -44,12 +43,11 @@ class PRectangle(PainterObject):
 # PainterObject for drawing lines
 class PLine(PainterObject):
     def __init__(self, x1, y1, x2, y2, color=Qt.white):
-        super().__init__()
+        super().__init__(color)
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
-        self.set_color(color)
         self.set_line_width(1)
     
     def paint(self, painter: QPainter):
@@ -64,7 +62,7 @@ class PLine(PainterObject):
 # PainterObject for drawing polygons
 class PPolygon(PainterObject):
     def __init__(self, xs, ys, color=Qt.white):
-        super().__init__()
+        super().__init__(color)
         if len(xs) != len(ys):
             raise ValueError("xs and ys must have the same length")
         
@@ -72,10 +70,23 @@ class PPolygon(PainterObject):
         for i in range(len(xs)):
             self.points.append(QPointF(xs[i], ys[i]))
 
-        self.set_color(color)
-    
     def paint(self, painter: QPainter):
         painter.setBrush(self._brush)
         painter.setPen(Qt.NoPen)
         painter.drawPolygon(QPolygonF(self.points))
 
+class PCircle(PainterObject):
+    def __init__(self, x, y, r, color=Qt.white):
+        super().__init__(color)
+        self.x = x
+        self.y = y
+        self.r = r
+
+    def paint(self, painter: QPainter):
+        painter.setBrush(self._brush)
+        painter.setPen(Qt.NoPen)
+
+        x = int(self.x - self.r)
+        y = int(self.y - self.r)
+        s = int(self.r*2)
+        painter.drawEllipse(x, y, s, s)
