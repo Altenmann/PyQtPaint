@@ -38,7 +38,7 @@ def run_app(
         init_objects(window)
 
         # The main thread loop
-        while True:
+        while window.isVisible():
             update(window)
             window.update_signal.emit()
             time.sleep(update_time)
