@@ -10,7 +10,7 @@ class App(ABC):
     An abstract class to setup and run a painter window.
     Usage:
     ```python
-    app = SubApp(**kwargs)
+    app = SubApp()
     app.run()
     ```
     '''
@@ -30,12 +30,12 @@ class App(ABC):
         # Initialize app
         app = QApplication(sys.argv)
 
-        window = PainterWindow(
+        self.window = PainterWindow(
             fullscreen=self.fullscreen, 
             width=self.screen_width, 
             height=self.screen_height
         )
-        window.show()
+        self.window.show()
 
         # Run app loop
         sys.exit(app.exec_())
@@ -50,7 +50,7 @@ class App(ABC):
         update_time = 1/self.fps
         while True: # Wait for window to be initialized
             try:
-                if(type(self.window) == PainterWindow):
+                if hasattr(self, "window"):
                     break
             except NameError:
                 time.sleep(1)
