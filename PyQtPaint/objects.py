@@ -7,7 +7,12 @@ class PainterObject(ABC):
     def __init__(self, **kwargs):
         brushColor = kwargs.get("brushColor", Qt.white)
         penColor = kwargs.get("penColor", Qt.white)
+        self._isPen = True
+        self._isBrush = True
         self.set_color(brushColor, penColor)
+
+    def set_isPen(self, isPen): self._isPen = isPen
+    def set_isBrush(self, isBrush): self._isBrush = isBrush
 
     def set_color(self, brushColor, penColor):
         self._brushColor = brushColor
@@ -20,17 +25,15 @@ class PainterObject(ABC):
     def set_line_width(self, width: float):
         self._pen.setWidthF(width)
 
-    def painter_brush_and_pen(self, painter: QPainter, isBrush, isPen):
-        if isBrush: painter.setBrush(self._brush)
+    def painter_brush_and_pen(self, painter: QPainter):
+        if self._isBrush: painter.setBrush(self._brush)
         else: painter.setBrush(QBrush())
-        if isPen: painter.setPen(self._pen)
+        if self._isPen: painter.setPen(self._pen)
         else: painter.setPen(Qt.NoPen)
 
     @abstractmethod
-    def paint(self, painter: QPainter, **kwargs):
-        isBrush = kwargs.get("isBrush", True)
-        isPen = kwargs.get("isPen", True)
-        self.painter_brush_and_pen(painter, isBrush, isPen)
+    def paint(self, painter: QPainter):
+        self.painter_brush_and_pen(painter)
 
 # PainterObject for drawing rectangles
 class PRectangle(PainterObject):
@@ -41,17 +44,15 @@ class PRectangle(PainterObject):
         self.width = width
         self.height = height
 
-    def paint(self, painter: QPainter, **kwargs):
-        super().paint(painter, **kwargs)
+    def paint(self, painter: QPainter):
+        super().paint(painter)
 
         x = int(self.x)
         y = int(self.y)
         w = int(self.width)
         h = int(self.height)
-        cx = x-int(w/2)
-        cy = y-int(h/2)
         
-        painter.drawRect(cx, cy, w, h)
+        painter.drawRect(x, y, w, h)
 
 # PainterObject for drawing lines
 class PLine(PainterObject):
@@ -64,14 +65,13 @@ class PLine(PainterObject):
         self.set_line_width(1)
     
     def paint(self, painter: QPainter):
-        super().paint(painter, isBrush = False, isPen = True)
+        super().paint(painter)
 
         x1 = int(self.x1)
         y1 = int(self.y1)
         x2 = int(self.x2)
         y2 = int(self.y2)
         
-        painter.setPen(self._pen)
         painter.drawLine(x1, y1, x2, y2)
 
 # PainterObject for drawing polygons
@@ -85,8 +85,8 @@ class PPolygon(PainterObject):
         for i in range(len(xs)):
             self.points.append(QPointF(xs[i], ys[i]))
 
-    def paint(self, painter: QPainter, **kwargs):
-        super().paint(painter, **kwargs)
+    def paint(self, painter: QPainter):
+        super().paint(painter)
         painter.drawPolygon(QPolygonF(self.points))
 
 class PCircle(PainterObject):
@@ -96,8 +96,8 @@ class PCircle(PainterObject):
         self.y = y
         self.r = r
 
-    def paint(self, painter: QPainter, **kwargs):
-        super().paint(painter, **kwargs)
+    def paint(self, painter: QPainter):
+        super().paint(painter)
 
         x = int(self.x - self.r)
         y = int(self.y - self.r)
