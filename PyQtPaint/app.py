@@ -14,7 +14,7 @@ class App(ABC):
     app.run()
     ```
     '''
-    
+
     def __init__(self, **kwargs):
         '''
         Use `fullscreen=True` or use `width=(int)` and `height=(int)`.
@@ -47,11 +47,8 @@ class App(ABC):
         self.fps = kwargs.get('fps', 30)
 
     def update_wrapper(self):
-        
         update_time = 1/self.fps
-
-        while True:
-            # Wait for window to be defined
+        while True: # Wait for window to be initialized
             try:
                 if(type(self.window) == PainterWindow):
                     break
