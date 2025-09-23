@@ -3,56 +3,75 @@ import sys, threading, time
 from typing import Callable
 from PyQt5.QtWidgets import QApplication
 from PyQtPaint.form import PainterWindow
+from abc import ABC, abstractmethod
 
-
-def setup_app(**kwargs):
-    '''Use `fullscreen=True` or use `width=(int)` and `height=(int)`'''
-    global screen_width, screen_height, fullscreen
-    screen_width = kwargs.get('width')
-    screen_height = kwargs.get('height')
-    fullscreen = kwargs.get('fullscreen', False)
-
-def run_app(
-        init_objects: Callable[[PainterWindow], None],
-        update: Callable[[PainterWindow], None], 
-        fps: int
-):
+class App(ABC):
     '''
-    Will run a thread of the given update method
-    Will also run an PyQt5 QApplication thread
+    An abstract class to setup and run a painter window.
+    Usage:
+    ```python
+    app = SubApp(**kwargs)
+    app.run()
+    ```
     '''
     
-    global window, screen_width, screen_height
+    def __init__(self, **kwargs):
+        '''
+        Use `fullscreen=True` or use `width=(int)` and `height=(int)`.
+        Use `fps=(int)` to choose how often it updates defaults to 30.
+        '''
+        self.setup_app(**kwargs)
 
-    update_time = 1/fps
+    def run(self):
+        '''Starts an update thread and the app thread.'''
+        # Start the update thread
+        threading.Thread(target=self.update_wrapper, daemon=True).start()
 
-    def update_wrapper():
+        # Initialize app
+        app = QApplication(sys.argv)
+
+        window = PainterWindow(
+            fullscreen=self.fullscreen, 
+            width=self.screen_width, 
+            height=self.screen_height
+        )
+        window.show()
+
+        # Run app loop
+        sys.exit(app.exec_())
+
+    def setup_app(self, **kwargs):
+        self.screen_width = kwargs.get('width', 500)
+        self.screen_height = kwargs.get('height', 500)
+        self.fullscreen = kwargs.get('fullscreen', False)
+        self.fps = kwargs.get('fps', 30)
+
+    def update_wrapper(self):
+        
+        update_time = 1/self.fps
+
         while True:
             # Wait for window to be defined
             try:
-                if(type(window) == PainterWindow):
+                if(type(self.window) == PainterWindow):
                     break
             except NameError:
                 time.sleep(1)
 
-        init_objects(window)
+        self.setup_objects()
 
         # The main thread loop
-        while window.isVisible():
-            update(window)
-            window.update_signal.emit()
+        while self.window.isVisible():
+            self.update()
+            self.window.update_signal.emit()
             time.sleep(update_time)
 
-    threading.Thread(target=update_wrapper, daemon=True).start()
+    @abstractmethod
+    def update(self): 
+        '''Update calls every so often based on self.fps'''
+        pass
 
-    # Initialize app
-    app = QApplication(sys.argv)
-
-    window = PainterWindow(fullscreen=fullscreen, width=screen_width, height=screen_height)
-    window.show()
-
-    # Run app loop
-    sys.exit(app.exec_())
-
-
-
+    @abstractmethod
+    def setup_objects(self): 
+        '''Add objects to the self.window PainterWindow'''
+        pass
