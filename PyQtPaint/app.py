@@ -35,12 +35,15 @@ class App(ABC):
             width=self.screen_width, 
             height=self.screen_height
         )
-        self.window_closed = False  # Add a flag
+        self.window_closed = False
         self.window.destroyed.connect(self.on_window_closed)
         self.window.show()
 
         # Run app loop
         sys.exit(app.exec_())
+
+    def on_window_closed(self):
+        self.window_closed = True
 
     def setup_app(self, **kwargs):
         self.screen_width = kwargs.get('width', 500)
@@ -50,17 +53,14 @@ class App(ABC):
 
     def update_wrapper(self):
         update_time = 1/self.fps
-        while True: # Wait for window to be initialized
-            try:
-                if hasattr(self, "window"):
-                    break
-            except NameError:
-                time.sleep(1)
+        while not hasattr(self, "window"):
+            # Wait for window to be initialized   
+            time.sleep(1)
 
         self.setup_objects()
 
         # The main thread loop
-        while not self.getattr(self, "window_closed", False):
+        while not getattr(self, "window_closed", False):
             self.update()
             self.window.update_signal.emit()
             time.sleep(update_time)
