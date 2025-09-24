@@ -35,6 +35,10 @@ class App(ABC):
             width=self.screen_width, 
             height=self.screen_height
         )
+        
+        self.width = self.window.width()
+        self.height = self.window.height()
+
         self.window_closed = False
         self.window.destroyed.connect(self.on_window_closed)
         self.window.show()

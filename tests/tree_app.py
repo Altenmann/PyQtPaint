@@ -45,7 +45,6 @@ class TreeApp(App):
 
     # Implement abstract method that is called before the app starts updating
     def setup_objects(self):
-        self.width, self.height = self.window.width(), self.window.height()
         self.level = [Branch(self.width/2, self.height, 3*pi/2, 150, self.levels)]
         self.branches.extend(self.level)
         self.add_level()
