@@ -25,6 +25,9 @@ class PainterObject(ABC):
     def set_line_width(self, width: float):
         self._pen.setWidthF(width)
 
+    def set_line_cap(self, capStyle):
+        self._pen.setCapStyle(capStyle)
+
     def painter_brush_and_pen(self, painter: QPainter):
         if self._isBrush: painter.setBrush(self._brush)
         else: painter.setBrush(QBrush())

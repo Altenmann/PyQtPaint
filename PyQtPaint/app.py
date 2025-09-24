@@ -35,6 +35,8 @@ class App(ABC):
             width=self.screen_width, 
             height=self.screen_height
         )
+        self.window_closed = False  # Add a flag
+        self.window.destroyed.connect(self.on_window_closed)
         self.window.show()
 
         # Run app loop
@@ -58,7 +60,7 @@ class App(ABC):
         self.setup_objects()
 
         # The main thread loop
-        while self.window.isVisible():
+        while not self.getattr(self, "window_closed", False):
             self.update()
             self.window.update_signal.emit()
             time.sleep(update_time)
