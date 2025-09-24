@@ -38,7 +38,7 @@ class PainterObject(ABC):
     def paint(self, painter: QPainter):
         self.painter_brush_and_pen(painter)
 
-# PainterObject for drawing rectangles
+
 class PRectangle(PainterObject):
     def __init__(self, x, y, width, height, **kwargs):
         super().__init__(**kwargs)
@@ -57,7 +57,7 @@ class PRectangle(PainterObject):
         
         painter.drawRect(x, y, w, h)
 
-# PainterObject for drawing lines
+
 class PLine(PainterObject):
     def __init__(self, x1, y1, x2, y2, **kwargs):
         super().__init__(**kwargs)
@@ -77,7 +77,7 @@ class PLine(PainterObject):
         
         painter.drawLine(x1, y1, x2, y2)
 
-# PainterObject for drawing polygons
+
 class PPolygon(PainterObject):
     def __init__(self, xs, ys, **kwargs):
         super().__init__(**kwargs)
@@ -91,6 +91,7 @@ class PPolygon(PainterObject):
     def paint(self, painter: QPainter):
         super().paint(painter)
         painter.drawPolygon(QPolygonF(self.points))
+
 
 class PCircle(PainterObject):
     def __init__(self, x, y, r, **kwargs):
