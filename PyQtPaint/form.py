@@ -37,6 +37,7 @@ class PainterWindow(QMainWindow):
 
     def paintEvent(self, event):
         painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
         painter.setBrush(QBrush(Qt.black))
         painter.drawRect(self.rect())
         for obj in self.painter_objects:
