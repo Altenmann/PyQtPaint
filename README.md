@@ -12,5 +12,7 @@ Contains the `PainterWindow` class of which objects can be added and removed fro
 * `PyQtPaint.objects`:
 Contains the `PainterObject` abstract class which descendants will have paint methods and other styling methods for customizing the object.
 
-## Examples
-* Check out tree_app.py in tests. Usage: `python -m tests.tree_app` press `esc` to close.
+## Examples:
+Press `esc` to close.
+* tree_app.py
+* mouse_app.py
