@@ -3,7 +3,7 @@
 
 from PyQtPaint import App, MouseHandler, PCircle
 from PyQt5.QtGui import QColor, QLinearGradient
-from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QPoint, Qt
 import types
 
 radius = 25
@@ -32,6 +32,8 @@ class MouseApp(App):
         background_grad.setFinalStop(QPoint(cx, self.height))
 
         self.setup_events()
+
+        self.window.setCursor(Qt.CursorShape.BlankCursor)
 
     def setup_events(self):
         def move(handler, event):
