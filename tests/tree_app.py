@@ -1,5 +1,5 @@
 
-# Testing the app functionality with a simple fullscreen app
+# Testing the app functionality with a simple subclass of App
 
 from PyQt5.QtGui import QColor
 from PyQt5.QtCore import Qt
@@ -34,9 +34,9 @@ class TreeApp(App):
 
     def __init__(self):
         # Apply settings of the App
-        super().__init__(fullscreen=True, fps=5)
+        # super().__init__(fullscreen=True, fps=5)
         # Use width and height instead of fullscreen
-        # super().__init__(width=700, height=700, fps=5)
+        super().__init__(width=700, height=700, fps=5)
 
         self.level = []
         self.branches = []

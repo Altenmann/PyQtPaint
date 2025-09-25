@@ -1,69 +1,38 @@
 
 import sys, threading, time
-from typing import Callable
 from PyQt5.QtWidgets import QApplication
 from PyQtPaint.form import PainterWindow
 from abc import ABC, abstractmethod
 
 class App(ABC):
-    '''
-    An abstract class to setup and run a painter window.
-    Usage:
-    ```python
-    app = SubApp()
-    app.run()
-    ```
-    '''
+    '''An abstract class to setup and run a painter window.'''
 
     def __init__(self, **kwargs):
-        '''
-        Use `fullscreen=True` or use `width=(int)` and `height=(int)`.
-        Use `fps=(int)` to choose how often it updates defaults to 30.
-        '''
-        self.setup_app(**kwargs)
+        self.fps = kwargs.pop('fps', 30)
+        self.init_qapp(**kwargs)
 
-    def run(self):
-        '''Starts an update thread and the app thread.'''
-        # Start the update thread
-        threading.Thread(target=self.update_wrapper, daemon=True).start()
+    def init_qapp(self, **kwargs):
+        self.app = QApplication(sys.argv)
+        self.window = PainterWindow(**kwargs)
 
-        # Initialize app
-        app = QApplication(sys.argv)
-
-        self.window = PainterWindow(
-            fullscreen=self.fullscreen, 
-            width=self.screen_width, 
-            height=self.screen_height
-        )
-        
+        # Define width and height from the window after defined
         self.width = self.window.width()
         self.height = self.window.height()
 
-        self.window_closed = False
-        self.window.destroyed.connect(self.on_window_closed)
+    def run(self):
+        '''Starts an update thread and the app thread.'''
         self.window.show()
+        self.window.destroyed.connect(lambda: setattr(self, "window_closed", True))
 
-        # Run app loop
-        sys.exit(app.exec_())
-
-    def on_window_closed(self):
-        self.window_closed = True
-
-    def setup_app(self, **kwargs):
-        self.screen_width = kwargs.get('width', 500)
-        self.screen_height = kwargs.get('height', 500)
-        self.fullscreen = kwargs.get('fullscreen', False)
-        self.fps = kwargs.get('fps', 30)
+        threading.Thread(target=self.update_wrapper, daemon=True).start()
+        sys.exit(self.app.exec_())
 
     def update_wrapper(self):
         update_time = 1/self.fps
-        while not hasattr(self, "window"):
-            # Wait for window to be initialized   
-            time.sleep(1)
 
         self.setup_objects()
 
-        # The main thread loop
+        # Update loop
         while not getattr(self, "window_closed", False):
             self.update()
             self.window.update_signal.emit()
