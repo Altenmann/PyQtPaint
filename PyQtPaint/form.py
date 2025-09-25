@@ -9,6 +9,9 @@ from PyQtPaint.events import MouseHandler
 class PainterWindow(QMainWindow):
     update_signal = pyqtSignal()
 
+    default_position = (0, 0)
+    default_size = (600, 600)
+
     def __init__(self, **kwargs):
         super().__init__()
         self.set_mouse_handler(kwargs.pop('mouse_handler', MouseHandler()))
@@ -22,8 +25,13 @@ class PainterWindow(QMainWindow):
         if kwargs.pop('fullscreen', False):
             self.showFullScreen()
         else:
-            width, height = kwargs.pop('width', 500), kwargs.pop('height', 500)
-            self.setGeometry(100, 100, width, height)
+            if 'size' in kwargs:
+                width, height = kwargs.pop('size')
+            else:
+                width = kwargs.pop('width', self.default_size[0])
+                height = kwargs.pop('height', self.default_size[1])
+            x, y = kwargs.pop('position', self.default_position)
+            self.setGeometry(x, y, width, height)
         self.render_hint = kwargs.pop('render_hint', QPainter.Antialiasing)
         self.background = kwargs.pop('background', QBrush(Qt.black))
 
