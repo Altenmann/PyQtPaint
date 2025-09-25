@@ -1,5 +1,5 @@
 
-class MouseHandler():
+class MouseHandler:
     # Mousetracking=True for capturing mouse movement without mouse down
     def __init__(self, mouse_tracking=False):
         self.mouse_tracking = mouse_tracking
@@ -12,3 +12,7 @@ class MouseHandler():
     def enter(self, event): pass
     def leave(self, event): pass
     def wheel(self, event): pass
+
+class KeyHandler:
+    def press(self, event): pass
+    def release(self, event): pass

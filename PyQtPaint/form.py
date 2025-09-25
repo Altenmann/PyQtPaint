@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtGui import QPainter, QBrush
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQtPaint.objects import PainterObject
-from PyQtPaint.events import MouseHandler
+from PyQtPaint.events import MouseHandler, KeyHandler
 
 class PainterWindow(QMainWindow):
     update_signal = pyqtSignal()
@@ -15,6 +15,7 @@ class PainterWindow(QMainWindow):
     def __init__(self, **kwargs):
         super().__init__()
         self.set_mouse_handler(kwargs.pop('mouse_handler', MouseHandler()))
+        self.set_key_handler(kwargs.pop('key_handler', KeyHandler()))
         self.init_qwindow(**kwargs)
         self.painter_objects = []
         self.update_signal.connect(self.update)
@@ -61,10 +62,11 @@ class PainterWindow(QMainWindow):
 
     # --- Key Handling ---
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key.Key_Escape:
-            self.close()
-        else:
-            super().keyPressEvent(event)
+        if event.key() == Qt.Key.Key_Escape: self.close()
+        else: self.key_handler.press(event)
+        
+    def keyReleaseEvent(self, event):
+        self.key_handler.release(event)
 
     # --- Mouse Event Handling ---
     def set_mouse_handler(self, mouse_handler):
