@@ -18,8 +18,8 @@ class PainterObject(ABC):
     def set_isBrush(self, isBrush): self._isBrush = isBrush
 
     def set_color(self, brushColor, penColor):
-        self._brushColor = brushColor
-        self._penColor = penColor
+        self.brushColor = brushColor
+        self.penColor = penColor
         if not hasattr(self, "_brush"): self._brush = QBrush(brushColor) 
         else: self._brush.setColor(brushColor)
         if not hasattr(self, "_pen"): self._pen = QPen(penColor) 
