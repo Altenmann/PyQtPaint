@@ -61,6 +61,9 @@ class PainterWindow(QMainWindow):
         painter.end()
 
     # --- Key Handling ---
+    def set_key_handler(self, key_handler):
+        self.key_handler = key_handler
+
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape: self.close()
         else: self.key_handler.press(event)

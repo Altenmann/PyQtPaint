@@ -11,6 +11,9 @@ class PainterObject(ABC):
         self._isBrush = True
         self.set_color(brushColor, penColor)
 
+    def isInside(self, x, y):
+        return False
+
     def set_isPen(self, isPen): self._isPen = isPen
     def set_isBrush(self, isBrush): self._isBrush = isBrush
 
@@ -47,6 +50,12 @@ class PRectangle(PainterObject):
         self.width = width
         self.height = height
 
+    def isInside(self, x, y):
+        return (
+            self.x <= x <= self.x + self.width and
+            self.y <= y <= self.y + self.height
+        )
+    
     def paint(self, painter: QPainter):
         super().paint(painter)
 
@@ -77,7 +86,6 @@ class PLine(PainterObject):
         
         painter.drawLine(x1, y1, x2, y2)
 
-
 class PPolygon(PainterObject):
     def __init__(self, xs, ys, **kwargs):
         super().__init__(**kwargs)
@@ -99,6 +107,16 @@ class PCircle(PainterObject):
         self.x = x
         self.y = y
         self.r = r
+
+    def isInside(self, x, y):
+        if (
+            self.x + self.r <= x <= self.x - self.r or 
+            self.y + self.r <= y <= self.y - self.r 
+        ): return False
+        dx = self.x - x
+        dy = self.y - y
+        dist = (dx**2 + dy**2) ** 0.5
+        return dist <= self.r
 
     def paint(self, painter: QPainter):
         super().paint(painter)

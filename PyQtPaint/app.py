@@ -8,6 +8,7 @@ class App(ABC):
     '''An abstract class to setup and run a painter window.'''
 
     def __init__(self, **kwargs):
+        self.auto_updates = kwargs.pop('auto_update', True)
         self.fps = kwargs.pop('fps', 30)
         self.init_qapp(**kwargs)
 
@@ -23,14 +24,14 @@ class App(ABC):
         '''Starts an update thread and the app thread.'''
         self.window.show()
         self.window.destroyed.connect(lambda: setattr(self, "window_closed", True))
-
-        threading.Thread(target=self.update_wrapper, daemon=True).start()
+        
+        self.setup_objects()
+        if self.auto_updates:
+            threading.Thread(target=self.update_wrapper, daemon=True).start()
         sys.exit(self.app.exec_())
 
     def update_wrapper(self):
         update_time = 1/self.fps
-
-        self.setup_objects()
 
         # Update loop
         while not getattr(self, "window_closed", False):

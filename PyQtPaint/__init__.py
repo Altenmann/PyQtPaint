@@ -2,11 +2,11 @@
 from .app import App
 from .form import PainterWindow
 from .objects import PainterObject, PPolygon, PRectangle, PLine, PCircle
-from .events import MouseHandler
+from .events import MouseHandler, KeyHandler
 
 # Exports
 __all__ = [
     'App', 'PainterWindow', 'PainterObject',
     'PPolygon', 'PRectangle', 'PLine', 'PCircle',
-    'MouseHandler'
+    'MouseHandler', 'KeyHandler'
 ]
