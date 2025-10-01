@@ -20,6 +20,17 @@ class App(ABC):
         self.width = self.window.width()
         self.height = self.window.height()
 
+        # Wire up event handlers to forward to App methods
+        self.window.on_mouse_press = self.on_mouse_press
+        self.window.on_mouse_release = self.on_mouse_release
+        self.window.on_mouse_double_click = self.on_mouse_double_click
+        self.window.on_mouse_move = self.on_mouse_move
+        self.window.on_mouse_enter = self.on_mouse_enter
+        self.window.on_mouse_leave = self.on_mouse_leave
+        self.window.on_mouse_wheel = self.on_mouse_wheel
+        self.window.on_key_press = self.on_key_press
+        self.window.on_key_release = self.on_key_release
+
     def run(self):
         '''Starts an update thread and the app thread.'''
         self.window.show()
@@ -48,3 +59,17 @@ class App(ABC):
     def setup_objects(self): 
         '''Add objects to the self.window PainterWindow'''
         pass
+
+    # --- Event Handler Methods (Override these in subclasses) ---
+    # Mouse events
+    def on_mouse_press(self, event): pass
+    def on_mouse_release(self, event): pass
+    def on_mouse_double_click(self, event): pass
+    def on_mouse_move(self, event): pass
+    def on_mouse_enter(self, event): pass
+    def on_mouse_leave(self, event): pass
+    def on_mouse_wheel(self, event): pass
+    
+    # Keyboard events
+    def on_key_press(self, event): pass
+    def on_key_release(self, event): pass
