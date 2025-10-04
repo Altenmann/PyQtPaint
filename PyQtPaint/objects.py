@@ -125,3 +125,15 @@ class PCircle(PainterObject):
         y = int(self.y - self.r)
         s = int(self.r*2)
         painter.drawEllipse(x, y, s, s)
+
+class PText(PainterObject):
+    def __init__(self, x, y, text, **kwargs):
+        super().__init__(**kwargs)
+        self.x = x
+        self.y = y
+        self.text = text
+
+    def paint(self, painter):
+        super().paint(painter)
+
+        painter.drawText(self.x, self.y, self.text)
