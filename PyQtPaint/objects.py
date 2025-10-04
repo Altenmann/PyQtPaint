@@ -136,4 +136,7 @@ class PText(PainterObject):
     def paint(self, painter):
         super().paint(painter)
 
-        painter.drawText(self.x, self.y, self.text)
+        x = int(self.x)
+        y = int(self.y)
+
+        painter.drawText(x, y, self.text)

@@ -1,6 +1,6 @@
 # Comprehensive demo showing all available event handlers
 
-from PyQtPaint import App, PRectangle, PCircle
+from PyQtPaint import App, PRectangle, PCircle, PText
 from PyQt5.QtGui import QColor
 from PyQt5.QtCore import Qt
 
@@ -18,10 +18,13 @@ class EventsDemoApp(App):
         
         self.click_indicator = PRectangle(350, 250, 100, 100, brushColor=QColor("#00FF00"))
         self.click_indicator.set_isPen(False)
+
+        self.mouseLabel = PText(self.width/2, 50, "", brushColor=QColor("#FFFFFF"))
         
     def setup_objects(self):
         self.window.add_painter_object(self.cursor_circle)
         self.window.add_painter_object(self.click_indicator)
+        self.window.add_painter_object(self.mouseLabel)
     
     def update(self):
         pass
@@ -33,6 +36,7 @@ class EventsDemoApp(App):
         self.cursor_circle.x = event.pos().x()
         self.cursor_circle.y = event.pos().y()
         print(f"Mouse moved to: ({event.pos().x()}, {event.pos().y()})")
+        self.mouseLabel.text = f"({event.pos().x()}, {event.pos().y()})"
     
     def on_mouse_press(self, event):
         """Called when a mouse button is pressed"""
