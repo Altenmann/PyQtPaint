@@ -1,7 +1,7 @@
 # Comprehensive demo showing all available event handlers
 
 from PyQtPaint import App, PRectangle, PCircle, PText
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtCore import Qt
 
 class EventsDemoApp(App):
@@ -19,7 +19,8 @@ class EventsDemoApp(App):
         self.click_indicator = PRectangle(350, 250, 100, 100, brushColor=QColor("#00FF00"))
         self.click_indicator.set_isPen(False)
 
-        self.mouseLabel = PText(self.width/2, 50, "", brushColor=QColor("#FFFFFF"))
+        font = QFont('Dank Mono', 12)
+        self.mouseLabel = PText(self.width/2, 50, "", font=font, brushColor=QColor("#FFFFFF"))
         
     def setup_objects(self):
         self.window.add_painter_object(self.cursor_circle)

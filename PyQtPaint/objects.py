@@ -1,5 +1,5 @@
 
-from PyQt5.QtGui import QPainter, QPen, QBrush, QPolygonF
+from PyQt5.QtGui import QPainter, QPen, QBrush, QPolygonF, QFont
 from PyQt5.QtCore import Qt, QPointF
 from abc import ABC, abstractmethod
 
@@ -133,10 +133,20 @@ class PText(PainterObject):
         self.y = y
         self.text = text
 
+        font = kwargs.pop('font', None)
+        if font != None:
+            self.font = font
+        else:
+            fontFamily = kwargs.pop('font_family', 'Arial')
+            fontSize = kwargs.pop('font_size', 12)
+            self.font = QFont(fontFamily, fontSize)
+
     def paint(self, painter):
         super().paint(painter)
 
         x = int(self.x)
         y = int(self.y)
+
+        painter.setFont(self.font)
 
         painter.drawText(x, y, self.text)
