@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtGui import QPainter, QBrush
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQtPaint.objects import PainterObject
-from PyQtPaint.events import MouseHandler, KeyHandler
 
 class PainterWindow(QMainWindow):
     update_signal = pyqtSignal()
@@ -14,8 +13,7 @@ class PainterWindow(QMainWindow):
 
     def __init__(self, **kwargs):
         super().__init__()
-        self.set_mouse_handler(kwargs.pop('mouse_handler', MouseHandler()))
-        self.set_key_handler(kwargs.pop('key_handler', KeyHandler()))
+        self.setMouseTracking(kwargs.pop('mouse_tracking', False))
         self.init_qwindow(**kwargs)
         self.painter_objects = []
         self.update_signal.connect(self.update)
@@ -61,25 +59,25 @@ class PainterWindow(QMainWindow):
         painter.end()
 
     # --- Key Handling ---
-    def set_key_handler(self, key_handler):
-        self.key_handler = key_handler
+    def keyPress(self, event): pass
+    def keyRelease(self, event): pass
 
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Key.Key_Escape: self.close()
-        else: self.key_handler.press(event)
-        
-    def keyReleaseEvent(self, event):
-        self.key_handler.release(event)
+    def keyPressEvent(self, event): self.keyPress(event)
+    def keyReleaseEvent(self, event): self.keyRelease(event)
 
     # --- Mouse Event Handling ---
-    def set_mouse_handler(self, mouse_handler):
-        self.setMouseTracking(mouse_handler.mouse_tracking)
-        self.mouse_handler = mouse_handler
-        
-    def mousePressEvent(self, event): self.mouse_handler.press(event)
-    def mouseReleaseEvent(self, event): self.mouse_handler.release(event)
-    def mouseDoubleClickEvent(self, event): self.mouse_handler.double(event)
-    def mouseMoveEvent(self, event): self.mouse_handler.move(event)
-    def enterEvent(self, event): self.mouse_handler.enter(event)
-    def leaveEvent(self, event): self.mouse_handler.leave(event)
-    def wheelEvent(self, event): self.mouse_handler.wheel(event)
+    def mousePress(self, event): pass
+    def mouseRelease(self, event): pass
+    def mouseDouble(self, event): pass
+    def mouseMove(self, event): pass
+    def mouseEnter(self, event): pass
+    def mouseLeave(self, event): pass
+    def mouseWheel(self, event): pass
+
+    def mousePressEvent(self, event): self.mousePress(event)
+    def mouseReleaseEvent(self, event): self.mouseRelease(event)
+    def mouseDoubleClickEvent(self, event): self.mouseDouble(event)
+    def mouseMoveEvent(self, event): self.mouseMove(event)
+    def enterEvent(self, event): self.mouseEnter(event)
+    def leaveEvent(self, event): self.mouseLeave(event)
+    def wheelEvent(self, event): self.mouseWheel(event)

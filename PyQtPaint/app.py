@@ -20,6 +20,18 @@ class App(ABC):
         self.width = self.window.width()
         self.height = self.window.height()
 
+        # Link key and mouse events to the form
+        self.window.keyPress = self.keyPress
+        self.window.keyRelease = self.keyRelease
+
+        self.window.mousePress = self.mousePress
+        self.window.mouseRelease = self.mouseRelease
+        self.window.mouseDouble = self.mouseDouble
+        self.window.mouseMove = self.mouseMove
+        self.window.mouseEnter = self.mouseEnter
+        self.window.mouseLeave = self.mouseLeave
+        self.window.mouseWheel = self.mouseWheel
+
     def run(self):
         '''Starts an update thread and the app thread.'''
         self.window.show()
@@ -46,5 +58,18 @@ class App(ABC):
 
     @abstractmethod
     def setup_objects(self): 
-        '''Add objects to the self.window PainterWindow'''
+        '''Add objects to self.window, PainterWindow'''
         pass
+
+    # Key Events
+    def keyPress(self, event): pass
+    def keyRelease(self, event): pass
+
+    # Mouse Events
+    def mousePress(self, event): pass
+    def mouseRelease(self, event): pass
+    def mouseDouble(self, event): pass
+    def mouseMove(self, event): pass
+    def mouseEnter(self, event): pass
+    def mouseLeave(self, event): pass
+    def mouseWheel(self, event): pass

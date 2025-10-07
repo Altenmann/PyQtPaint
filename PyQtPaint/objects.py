@@ -1,5 +1,5 @@
 
-from PyQt5.QtGui import QPainter, QPen, QBrush, QPolygonF
+from PyQt5.QtGui import QPainter, QPen, QBrush, QPolygonF, QFont
 from PyQt5.QtCore import Qt, QPointF
 from abc import ABC, abstractmethod
 

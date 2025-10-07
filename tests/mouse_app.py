@@ -1,10 +1,9 @@
 
 # App to test mouse handling
 
-from PyQtPaint import App, MouseHandler, PCircle
+from PyQtPaint import App, PCircle
 from PyQt5.QtGui import QColor, QLinearGradient
 from PyQt5.QtCore import QPoint, Qt
-import types
 
 radius = 25
 mouseCircle = PCircle(0, 0, radius, brushColor=QColor("#000000"))
@@ -17,35 +16,28 @@ background_grad.setStops([
     (1, QColor("#000000"))
 ])
 
-mouseHandler = MouseHandler(True)
-
 class MouseApp(App):
     def __init__(self):
         super().__init__(
             title='Mouse App',
-            width=800, height=800, 
-            mouse_handler=mouseHandler, 
+            width=800, height=800,
+            mouse_tracking = True,
             background=background_grad
         )
         cx = int(self.width/2)
         background_grad.setStart(QPoint(cx, 0))
         background_grad.setFinalStop(QPoint(cx, self.height))
 
-        self.setup_events()
-
         self.window.setCursor(Qt.CursorShape.BlankCursor)
 
-    def setup_events(self):
-        def move(handler, event):
-            mouseCircle.x = event.pos().x()
-            mouseCircle.y = event.pos().y()
+    def mouseMove(self, event):
+        mouseCircle.x = event.pos().x()
+        mouseCircle.y = event.pos().y()
 
-            newStops = background_grad.stops()
-            midFloat = min(.99, max(.01, event.pos().y()/self.height))
-            newStops[1] = (midFloat, newStops[1][1])
-            background_grad.setStops(newStops)
-            
-        mouseHandler.move = types.MethodType(move, mouseHandler)
+        newStops = background_grad.stops()
+        midFloat = min(.99, max(.01, event.pos().y()/self.height))
+        newStops[1] = (midFloat, newStops[1][1])
+        background_grad.setStops(newStops)
         
         
     def setup_objects(self):
