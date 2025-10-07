@@ -1,12 +1,3 @@
 **/__pycache__
 *.egg-info
 build/
-
-# Cursor IDE files
-.specstory/
-.cursorignore
-.cursorindexingignore
-
-# Temporary files and backups
-codebase_*.zip
-codebase_switcher.py
