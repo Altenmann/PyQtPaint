@@ -20,8 +20,8 @@ class MouseApp(App):
     def __init__(self):
         super().__init__(
             title='Mouse App',
-            width=800, height=800, 
-            mouse_tracking=True, 
+            width=800, height=800,
+            mouse_tracking = True,
             background=background_grad
         )
         cx = int(self.width/2)
@@ -30,8 +30,7 @@ class MouseApp(App):
 
         self.window.setCursor(Qt.CursorShape.BlankCursor)
 
-    def on_mouse_move(self, event):
-        """Handle mouse movement - update circle position and gradient"""
+    def mouseMove(self, event):
         mouseCircle.x = event.pos().x()
         mouseCircle.y = event.pos().y()
 
