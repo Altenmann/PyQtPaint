@@ -125,3 +125,28 @@ class PCircle(PainterObject):
         y = int(self.y - self.r)
         s = int(self.r*2)
         painter.drawEllipse(x, y, s, s)
+
+class PText(PainterObject):
+    def __init__(self, x, y, text, **kwargs):
+        super().__init__(**kwargs)
+        self.x = x
+        self.y = y
+        self.text = text
+
+        font = kwargs.pop('font', None)
+        if font != None:
+            self.font = font
+        else:
+            fontFamily = kwargs.pop('font_family', 'Arial')
+            fontSize = kwargs.pop('font_size', 12)
+            self.font = QFont(fontFamily, fontSize)
+
+    def paint(self, painter):
+        super().paint(painter)
+
+        x = int(self.x)
+        y = int(self.y)
+
+        painter.setFont(self.font)
+
+        painter.drawText(x, y, self.text)
