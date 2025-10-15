@@ -2,7 +2,7 @@
 import sys, threading, time
 from PyQt5.QtWidgets import QApplication
 from PyQtPaint.form import PainterWindow
-from abc import ABC, abstractmethod
+from abc import ABC
 
 class App(ABC):
     '''An abstract class to setup and run a painter window.'''
@@ -50,15 +50,13 @@ class App(ABC):
             self.update()
             self.window.update_signal.emit()
             time.sleep(update_time)
-
-    @abstractmethod
-    def update(self): 
-        '''Update calls every so often based on self.fps'''
-        pass
-
-    @abstractmethod
+            
     def setup_objects(self): 
         '''Add objects to self.window, PainterWindow'''
+        pass
+    
+    def update(self): 
+        '''Update calls every so often based on self.fps'''
         pass
 
     # Key Events
