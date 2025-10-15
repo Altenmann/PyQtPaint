@@ -41,8 +41,8 @@ These will be keyword arguments that are passed into the super constructor.
 	* Automatically called in the constructor
 	* Where the initial painter objects should be added to the window
 * `update`:
-	* When `auto_update` is true will be called asynchronously multiple times a second based on `fps`
-	* When `auto_update` is false call `update` manually when you need a repaint
+	* When `auto_update` is `True` will be called asynchronously multiple times a second based on `fps`
+	* When `auto_update` is `False` call `update` manually when you need a repaint
 #### Events:
 They will all have an event parameter
 ##### Keys:
