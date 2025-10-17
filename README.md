@@ -10,7 +10,7 @@ pip install PyQtPaint
 ```
 * **pip**:
 ```sh
-pip install PyQtPaint==0.1.0
+pip install PyQtPaint==0.2.1
 ```
 
 ## Modules
