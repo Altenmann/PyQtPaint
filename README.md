@@ -2,6 +2,17 @@
 **This is still a work in progress, but basic functionality is present.**
 A library of boilerplate code using the PyQt5 library. Used for creating a window to draw in and having an application and update thread. Also comes with some predefined objects to add to the window for drawing.
 
+## Installation:
+* **Github**:
+```sh
+git clone https://github.com/WafflerThe/PyQtPaint
+pip install PyQtPaint
+```
+* **pip**:
+```sh
+pip install PyQtPaint==0.1.0
+```
+
 ## Modules
 * `PyQtPaint.app`:
 Contains the `App` abstract class for running the window and updates to it.
@@ -17,7 +28,7 @@ Press `esc` to close.
 * tree_app.py
 * mouse_app.py
 
-## Usage:
+## How to use:
 The expected way to use this library to to create a class that extends App.
 The subclass can override various methods inside of App and there are options for further customization.
 
